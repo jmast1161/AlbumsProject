@@ -8,5 +8,7 @@ namespace Albums.Models
     public class AlbumThumbnailData
     {
         public string AlbumThumbnailPath { get; set; }
+
+        public string AlbumPhotoTitle { get; set; }
     }
 }

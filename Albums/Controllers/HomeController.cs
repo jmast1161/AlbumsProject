@@ -28,6 +28,7 @@ namespace Albums.Controllers
             var userJson = webClient.DownloadString(@"https://jsonplaceholder.typicode.com/users");
             var photosJson = webClient.DownloadString(@"https://jsonplaceholder.typicode.com/photos");
             var albumsJson = webClient.DownloadString(@"https://jsonplaceholder.typicode.com/albums");
+            var postsJson = webClient.DownloadString(@"https://jsonplaceholder.typicode.com/posts");
 
             var userData = JsonConvert.DeserializeObject<List<UserData>>(userJson);
             var photoData = JsonConvert.DeserializeObject<List<PhotoData>>(photosJson);
@@ -54,9 +55,11 @@ namespace Albums.Controllers
                         var albumThumbnails = new List<AlbumThumbnailData>();
                         foreach (var photo in photoData)
                         {
-                            if (photo.Id == album.Id)
+                            if (photo.AlbumId == album.Id)
                             {
-                                albumThumbnails.Add(new AlbumThumbnailData() { AlbumThumbnailPath = photo.ThumbnailUrl,});
+                                albumThumbnails.Add(new AlbumThumbnailData() { 
+                                    AlbumThumbnailPath = photo.ThumbnailUrl,
+                                    AlbumPhotoTitle = photo.Title,});
                             }
                         }
 

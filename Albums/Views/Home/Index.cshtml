@@ -4,6 +4,35 @@
     ViewData["Title"] = "Home Page";
 }
 
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .collapsible {
+            background-color: #777;
+            color: white;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+        }
+
+        .active, .collapsible:hover {
+            background-color: #555;
+        }
+
+        .content {
+            padding: 0 18px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.2s ease-out;
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+
 <form asp-action="Index" method="get">
     <div class="form-actions no-color">
         <p>
@@ -16,27 +45,27 @@
 
 <table class="table">
     <thead>
-            <tr>
-                <th>
-                    Album Thumbnail
-                </th>
-                <th>
-                    Title
-                </th>
-                <th>
-                    User's Name
-                </th>
-                <th>
-                    Email
-                </th>
-                <th>
-                    Phone
-                </th>
-                <th>
-                    Address
-                </th>
-            </tr>
-        </thead>
+        <tr>
+            <th>
+                Album Thumbnail
+            </th>
+            <th>
+                Title
+            </th>
+            <th>
+                User's Name
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                Phone
+            </th>
+            <th>
+                Address
+            </th>
+        </tr>
+    </thead>
     <tbody>
         @foreach (var item in Model)
         {
@@ -45,7 +74,18 @@
                     <img src="@Url.Content(item.AlbumThumbnails[0].AlbumThumbnailPath)" alt="Image" />
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.AlbumTitle)
+                    <button class="collapsible">
+                        @Html.DisplayFor(modelItem => item.AlbumTitle)
+                    </button>
+                    <div class="content">
+                        @foreach (var albumThumbnail in item.AlbumThumbnails)
+                        { 
+                            <figure>
+                                <img src="@Url.Content(albumThumbnail.AlbumThumbnailPath)" alt="Image" />
+                                <figcaption>@Html.DisplayFor(modelItem => albumThumbnail.AlbumPhotoTitle)</figcaption>
+                            </figure>
+                        }
+                    </div>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
@@ -59,15 +99,27 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Address)
                 </td>
-                @*<td>
-                        <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-                    </td>*@
             </tr>
         }
     </tbody>
 </table>
+
+<script>
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+
+    for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function () {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+            } else {
+                content.style.maxHeight = content.scrollHeight + "px";
+            }
+        });
+    }
+</script>
 
 @{
     var prevDisabled = !Model.HasPrevious ? "disabled" : "";
@@ -75,14 +127,13 @@
 }
 
 <a asp-action="Index"
-   asp-route-sortOrder="@ViewData["CurrentSort"]"
    asp-route-pageNumber="@(Model.CurrentPage - 1)"
    asp-route-currentFilter="@ViewData["CurrentFilter"]"
    class="btn btn-default @prevDisabled">
     Previous
 </a>
+
 <a asp-action="Index"
-   asp-route-sortOrder="@ViewData["CurrentSort"]"
    asp-route-pageNumber="@(Model.CurrentPage + 1)"
    asp-route-currentFilter="@ViewData["CurrentFilter"]"
    class="btn btn-default @nextDisabled">
