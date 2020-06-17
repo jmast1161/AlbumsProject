@@ -22,7 +22,7 @@ namespace Albums.Controllers
 
         //public async Task<IActionResult>
 
-        public IActionResult Index()
+        public IActionResult Index(string searchString, int? pageNumber)
         {
             var webClient = new WebClient();
             var userJson = webClient.DownloadString(@"https://jsonplaceholder.typicode.com/users");
@@ -38,8 +38,7 @@ namespace Albums.Controllers
                 AllUsers = userData,
             };
 
-            var albumEntries = new AlbumEntries();
-            albumEntries.AlbumEntires = new List<AlbumEntryData>();
+            var entries = new List<AlbumEntryData>();
 
             // not making any assumptions as to data ids guaranteed in ascending order
             // otherwise would track index to avoid iterating entire list of albums
@@ -68,12 +67,17 @@ namespace Albums.Controllers
                         albumEntry.Email = user.Email;
                         albumEntry.Address = user.Address;
 
-                        albumEntries.AlbumEntires.Add(albumEntry);
+                        entries.Add(albumEntry);
                     }
                 }
             }
 
-            return View(albumEntries);
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                entries = entries.Where(e => e.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase) || e.AlbumTitle.Contains(searchString)).ToList();
+            }
+
+            return View(PagedList<AlbumEntryData>.CreatePage(entries, pageNumber ?? 1, 10));
         }
 
         public IActionResult Privacy()

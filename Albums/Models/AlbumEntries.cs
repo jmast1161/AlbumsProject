@@ -7,6 +7,6 @@ namespace Albums.Models
 {
     public class AlbumEntries
     {
-        public List<AlbumEntryData> AlbumEntires { get; set; }
+        public PagedList<AlbumEntryData> AlbumEntires { get; set; }
     }
 }
