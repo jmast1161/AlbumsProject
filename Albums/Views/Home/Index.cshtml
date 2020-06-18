@@ -19,6 +19,18 @@
             font-size: 15px;
         }
 
+        .userButton {
+            background-color: rgb(0,0,0);
+            color: white;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+        }
+
         .userPostPopupBox {
             display: none; /* Hidden by default */
             position: fixed; /* Stay in place */
@@ -57,7 +69,7 @@
             cursor: pointer;
         }
                 
-        .active, .collapsible:hover {
+        .active, .collapsible:hover, .userButton:hover {
             background-color: #555;
         }
 
@@ -126,15 +138,72 @@
                     </div>
                 </td>
                 <td>
-                    <button id="userButton">
-                        @Html.DisplayFor(modelItem => item.Name)
+                    <button class="userButton">
+                        @Html.DisplayFor(modelItem => item.UserInfo.Name)
                     </button>
                     <div id="userPostPopup" class="userPostPopupBox">
                         <div class="user-post-content">
-                            <span class="close">&times;</span>    
+                            <span class="close">&times;</span>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            User Id
+                                        </th>
+                                        <th>
+                                            Name
+                                        </th>
+                                        <th>
+                                            Username
+                                        </th>
+                                        <th>
+                                            Email
+                                        </th>
+                                        <th>
+                                            Phone
+                                        </th>
+                                        <th>
+                                            Address
+                                        </th>
+                                        <th>
+                                            Company
+                                        </th>
+                                        <th>
+                                            Website
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.UserInfo.Id)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.UserInfo.Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.UserInfo.UserName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.UserInfo.Email)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.UserInfo.Phone)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.UserInfo.Address)
+                                        @Html.DisplayFor(modelItem => item.UserInfo.Address.Geo)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.UserInfo.Company)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.UserInfo.Website)
+                                    </td>
+                                </tr>
+                            </table>
                             <table>
                                 @foreach (var post in item.Posts)
-                                { 
+                                {
                                     <tr>
                                         <td>
                                             <h6>
@@ -151,13 +220,13 @@
                     </div>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Email)
+                    @Html.DisplayFor(modelItem => item.UserInfo.Email)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Phone)
+                    @Html.DisplayFor(modelItem => item.UserInfo.Phone)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Address)
+                    @Html.DisplayFor(modelItem => item.UserInfo.Address)
                 </td>
             </tr>
         }
@@ -169,14 +238,16 @@
     var modal = document.getElementById("userPostPopup");
 
     // Get the button that opens the modal
-    var btn = document.getElementById("userButton");
+    var btn = document.getElementsByClassName("userButton");
 
     // Get the <span> element that closes the modal
     var span = document.getElementsByClassName("close")[0];
 
-    // When the user clicks the button, open the modal
-    btn.onclick = function () {
-        modal.style.display = "block";
+    for (i = 0; i < btn.length; ++i) {
+        // When the user clicks the button, open the modal
+        btn[i].onclick = function () {
+            modal.style.display = "block";
+        }
     }
 
     // When the user clicks on <span> (x), close the modal

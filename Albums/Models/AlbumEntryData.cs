@@ -8,16 +8,10 @@ namespace Albums.Models
     public class AlbumEntryData
     {
         public List<AlbumThumbnailData> AlbumThumbnails { get; set; }
-
+        
         public string AlbumTitle { get; set; }
 
-        public string Name { get; set; }
-
-        public string Phone { get; set; }
-
-        public string Email { get; set; }
-
-        public AddressData Address { get; set; }
+        public UserData UserInfo { get; set; }
 
         public List<PostData> Posts { get; set; }
     }
