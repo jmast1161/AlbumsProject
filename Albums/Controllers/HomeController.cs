@@ -33,6 +33,7 @@ namespace Albums.Controllers
             var userData = JsonConvert.DeserializeObject<List<UserData>>(userJson);
             var photoData = JsonConvert.DeserializeObject<List<PhotoData>>(photosJson);
             var albumData = JsonConvert.DeserializeObject<List<AlbumData>>(albumsJson);
+            var postData = JsonConvert.DeserializeObject<List<PostData>>(postsJson);
 
             var users = new Users()
             {
@@ -63,12 +64,22 @@ namespace Albums.Controllers
                             }
                         }
 
+                        var posts = new List<PostData>();
+                        foreach (var post in postData)
+                        {
+                            if (post.UserId == user.Id)
+                            {
+                                posts.Add(post);
+                            }
+                        }
+
                         albumEntry.AlbumThumbnails.AddRange(albumThumbnails);
                         albumEntry.AlbumTitle = album.Title;
                         albumEntry.Name = user.Name;
                         albumEntry.Phone = user.Phone;
                         albumEntry.Email = user.Email;
                         albumEntry.Address = user.Address;
+                        albumEntry.Posts = posts;
 
                         entries.Add(albumEntry);
                     }

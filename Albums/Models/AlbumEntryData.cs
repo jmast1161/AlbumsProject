@@ -18,5 +18,7 @@ namespace Albums.Models
         public string Email { get; set; }
 
         public AddressData Address { get; set; }
+
+        public List<PostData> Posts { get; set; }
     }
 }
