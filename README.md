@@ -1,2 +1,2 @@
 # AlbumsProject
-![Albums Demo](demo/albumsDemo.gif)
+![Albums Demo](albumsDemo.gif)
